@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tip Calculator</title>
+    <!------------Styles------------->
+    <style type="text/css">
+      body {
+        margin: 0 auto;
+        max-width: 30em;
+        width: 80%;
+        color: rgb(49, 49, 49);
+      }
+
+      h1 {
+        color: darkmagenta;
+      }
+      .row {
+        margin: 10px;
+        font-weight: 900;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .row label {
+        flex: 1;
+        margin-right: 0.5em;
+      }
+
+      .row input {
+        flex: 2;
+      }
+
+      button {
+        padding: 5px;
+        font-weight: 900;
+        background: rgb(206, 224, 250);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Tip Calculator</h1>
+    <form id="tip-calculator">
+      <div class="row">
+        <label for="amount">Bill Amount</label>
+        <input type="text" name="amount" id="amount" />
+      </div>
+
+      <div class="row">
+        <label for="tip">Tip %</label>
+        <input type="text" name="tip" id="tip" />
+      </div>
+
+      <div class="row">
+        <label for="people">Number of People</label>
+        <input type="text" name="people" id="people" />
+      </div>
+
+      <div id="per-person" aria-live="polite"></div>
+
+      <p class="text-right">
+        <button>Calculate Tip</button>
+      </p>
+    </form>
+    <!-----------Script------------->
+    <script>
+      // Variables
+      const calculator = document.querySelector("#tip-calculator");
+      const amount = document.querySelector("#amount");
+      const tip = document.querySelector("#tip");
+      const people = document.querySelector("#people");
+      let perPerson = document.querySelector("#per-person");
+
+      // Listen for calculator submission events
+      calculator.addEventListener(
+        "submit",
+        function () {
+          // Prevent form submission
+          event.preventDefault();
+
+          //Don't run if there are no numbers for any of the fields
+          if (
+            amount.value.length < 1 ||
+            tip.value.length < 1 ||
+            people.value.length < 1
+          )
+            return;
+
+          // Calculate how much each person owes
+          let calculateTip = function () {
+            // Calculate amounts
+            let tipPercentage = parseInt(tip.value, 10) / 100;
+            let amountValue = parseFloat(amount.value);
+            let tipAmount = amountValue * tipPercentage;
+            let total = amountValue + tipAmount;
+            let perPersonAmount = total / parseInt(people.value, 10);
+
+            // Show the per-person amount
+            perPerson.textContent =
+              "Each person owes $" + perPersonAmount.toFixed(2).toString();
+          };
+          calculateTip();
+        },
+        false
+      );
+    </script>
+  </body>
+</html>
